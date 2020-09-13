@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.sign_out) {
             Authentication.getInstance(this).signOut(this);
+            Authentication.getInstance(this).revokeAccess(this);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -27,11 +27,10 @@ import model.model.MediaList;
 //adapter for MediaList Recyclerview
 public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.MediaListViewHolder> {
 
-    private static List<MediaList> displayList; //all active lists
-    private static List<MediaList> allLists;
+    private static List<MediaList> displayList; //lists to be displayed
+    private static List<MediaList> allLists; //all active lists
     private static ListManager listManager;
     private SelectionTracker selectionTracker;
-    private ActionMode actionMode;
 
     public class MediaListViewHolder extends RecyclerView.ViewHolder {
 
@@ -65,7 +64,7 @@ public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.Medi
         this.selectionTracker = selectionTracker;
     }
 
-    //filter characters and adjust list displayed
+    //search filter
     public void filter(String charText) {
         charText = charText.toLowerCase();
         displayList.clear();
@@ -88,6 +87,7 @@ public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.Medi
         allLists.addAll(displayList);
     }
 
+    //add list after created for async tasks
     public void addLists(List<MediaList> lists) {
         allLists.addAll(lists);
         displayList.addAll(lists);
@@ -139,12 +139,11 @@ public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.Medi
     }
 
     //creates an adapter
-    public MediaListAdapter(List<MediaList> exampleList, ActionMode actionMode) {
+    public MediaListAdapter(List<MediaList> exampleList) {
         displayList = exampleList;
         allLists = new ArrayList<>();
         allLists.addAll(displayList);
         listManager = ListManager.getInstance();
-        this.actionMode = actionMode;
     }
 
     //get the position of item

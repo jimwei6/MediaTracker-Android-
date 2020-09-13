@@ -63,7 +63,7 @@ public class ItemListFragment extends Fragment {
     private Spinner spinner;
     private ActionMode actionMode;
     private Menu menu;
-    private SearchView searchView;
+  //  private SearchView searchView;
 
     //current list
     private String listName;
@@ -78,7 +78,7 @@ public class ItemListFragment extends Fragment {
         listManager = ListManager.getInstance();
         itemManager = ItemManager.getInstance();
         initializeRecyclerView();
-        initializeSearchView();
+        //initializeSearchView();
         initializeSpinner();
         initializeSelectionTracker();
         return rootView;
@@ -90,24 +90,24 @@ public class ItemListFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
     }
 
-    private void initializeSearchView() {
-        searchView = rootView.findViewById(R.id.media_frag_search);
-        searchView.setQueryHint("Search");
-        searchView.onActionViewExpanded();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mediaItemAdapter.filter(newText);
-                return false;
-            }
-        });
-    }
+//    private void initializeSearchView() {
+//        searchView = rootView.findViewById(R.id.media_frag_search);
+//        searchView.setQueryHint("Search");
+//        searchView.onActionViewExpanded();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                mediaItemAdapter.filter(newText);
+//                return false;
+//            }
+//        });
+//    }
 
 //    //initialize list of cardViews to show all lists
     private void initializeRecyclerView() {
@@ -133,7 +133,7 @@ public class ItemListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sortItemList(allItems);
-                searchView.clearFocus();
+               // searchView.clearFocus();
             }
 
             @Override
@@ -163,12 +163,12 @@ public class ItemListFragment extends Fragment {
                             selectionTracker, allItems, listName, mediaItemAdapter));
                     Integer size = selectionTracker.getSelection().size();
                     actionMode.setTitle(size.toString());
-                    searchView.clearFocus();
-                    searchView.setInputType(InputType.TYPE_NULL);
+//                    searchView.clearFocus();
+//                    searchView.setInputType(InputType.TYPE_NULL);
                 } else if (!selectionTracker.hasSelection() && actionMode != null) {
                     actionMode.finish();
                     actionMode = null;
-                    searchView.setInputType(InputType.TYPE_CLASS_TEXT);
+                    //searchView.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else if (selectionTracker.hasSelection()){
                     Integer size = selectionTracker.getSelection().size();
                     actionMode.setTitle(size.toString());

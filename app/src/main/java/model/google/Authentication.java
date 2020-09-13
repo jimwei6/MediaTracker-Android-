@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 
 import com.example.mediatracker20.R;
+import com.example.mediatracker20.SignInActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -57,7 +58,10 @@ public class Authentication {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        activity.finish();
+                        authentication = null;
+                        Intent signIn = new Intent(activity, SignInActivity.class);
+                        signIn.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        activity.startActivity(signIn);
                     }
                 });
     }

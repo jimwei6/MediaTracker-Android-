@@ -13,6 +13,8 @@ public class MediaSources {
         this.type = type;
     }
 
+
+    //Getters and Setters:
     public int getImageId() {
         return imageId;
     }

@@ -31,12 +31,10 @@ import model.model.MediaList;
 //Adapter for MediaItems Recyclerview
 public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.MediaItemViewHolder> {
 
-    private static List<MediaItem> allItems;
-    private static List<MediaItem> displayItems;
-    private static ListManager listManager;
-    private MediaList selectedList;
+    private static List<MediaItem> allItems; //all items
+    private static List<MediaItem> displayItems; //items displayed
+    private MediaList selectedList;             //list selected
     private SelectionTracker selectionTracker;
-    private static ItemManager itemManager;
     private int actionId;
 
     public class MediaItemViewHolder extends RecyclerView.ViewHolder {
@@ -63,7 +61,7 @@ public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.Medi
             return new ListItemDetail(getAdapterPosition(), displayItems.get(getAdapterPosition()));
         }
 
-        public final void bind(MediaItem list, boolean isActive) {
+        public final void bind(boolean isActive) {
             layout.setActivated(isActive);
         }
     }
@@ -72,19 +70,15 @@ public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.Medi
         this.selectionTracker = selectionTracker;
     }
 
-    public void syncLists() {
-        allItems.clear();
-        allItems.addAll(displayItems);
-    }
-
     @NonNull
     @Override
     public MediaItemAdapter.MediaItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_item_card, parent, false);
         MediaItemAdapter.MediaItemViewHolder evh = new MediaItemAdapter.MediaItemViewHolder(v);
-        return evh; //evh;
+        return evh; //return the view holder
     }
 
+    // set the details of the card
     @Override
     public void onBindViewHolder(@NonNull MediaItemAdapter.MediaItemViewHolder holder, int position) {
         MediaItem item = displayItems.get(position);
@@ -93,7 +87,7 @@ public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.Medi
         holder.itemTitle.setText(item.getItemInfo("Title"));
         holder.itemEpisodes.setText("Episodes: " + item.getItemInfo("Episodes"));
         Picasso.get().load(item.getItemInfo("ImageLink")).into(holder.itemImage);
-        holder.bind(item, selectionTracker.isSelected(item));
+        holder.bind(selectionTracker.isSelected(item));
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,16 +117,14 @@ public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.Medi
         displayItems = itemsList;
         allItems = new ArrayList<>();
         allItems.addAll(displayItems);
-        listManager = ListManager.getInstance();
-        itemManager = ItemManager.getInstance();
         this.selectedList = mediaList;
         actionId = navActionId;
     }
 
+    //search filter
     public void filter(String charText) {
         charText = charText.toLowerCase();
         displayItems.clear();
-        System.out.println(charText.length());
         if (charText.length() == 0) {
             displayItems.addAll(allItems);
         } else {
@@ -145,10 +137,9 @@ public class MediaItemAdapter extends RecyclerView.Adapter<MediaItemAdapter.Medi
         notifyDataSetChanged();
     }
 
-    public void addList(List<MediaItem> list) {
-        if (list == null) {
-            Log.e("list is null", "list is null");
-        } else {
+    //add items to list for async tasks
+    public void addItemsToList(List<MediaItem> list) {
+        if (list != null) {
             displayItems.addAll(list);
             this.allItems.addAll(list);
         }

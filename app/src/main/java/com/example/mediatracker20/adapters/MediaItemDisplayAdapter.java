@@ -23,9 +23,9 @@ import model.model.MediaItem;
 //Adapter for MediaItems Recyclerview used only to display and click into. No selection or delete...
 public class MediaItemDisplayAdapter extends RecyclerView.Adapter<MediaItemDisplayAdapter.MediaItemViewHolder> {
 
-    private static List<MediaItem> displayItems;
-    private boolean pager = false;
-    private int actionId;
+    private static List<MediaItem> allItems; //all items to be displayed
+    private boolean pager = false; //if it is for viewpager or not (view pager needs to wrap)
+    private int actionId; //nav id
 
     public class MediaItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -51,20 +51,21 @@ public class MediaItemDisplayAdapter extends RecyclerView.Adapter<MediaItemDispl
     public MediaItemDisplayAdapter.MediaItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_item_display_card, parent, false);
         if(pager == true) {
-            v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); //for view pager specifications
         }
         MediaItemDisplayAdapter.MediaItemViewHolder evh = new MediaItemDisplayAdapter.MediaItemViewHolder(v);
-        return evh; //evh;
+        return evh; //view holder;
     }
 
+    //set card info
     @Override
     public void onBindViewHolder(@NonNull MediaItemDisplayAdapter.MediaItemViewHolder holder, int position) {
-        MediaItem item = displayItems.get(position);
+        MediaItem item = allItems.get(position);
         holder.itemRating.setText("Rating: " + item.getItemInfo("Rating"));
         holder.itemTitle.setText(item.getItemInfo("Title"));
         holder.itemEpisodes.setText("Episodes: " + item.getItemInfo("Episodes"));
         Picasso.get().load(item.getItemInfo("ImageLink")).into(holder.itemImage);
-        holder.layout.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() { //to item summary
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -76,19 +77,19 @@ public class MediaItemDisplayAdapter extends RecyclerView.Adapter<MediaItemDispl
 
     @Override
     public int getItemCount() {
-        return displayItems.size();
+        return allItems.size();
     }
 
     public MediaItemDisplayAdapter(List<MediaItem> itemsList, int navActionID) {
-        displayItems = itemsList;
+        allItems = itemsList;
         actionId = navActionID;
     }
 
-    public void addList(List<MediaItem> list) {
-            displayItems.addAll(list);
+    public void addItemsToList(List<MediaItem> list) {
+            allItems.addAll(list);
     }
 
-    public void isPager(boolean t) {
+    public void setIsPager(boolean t) {
         pager = t;
     }
 

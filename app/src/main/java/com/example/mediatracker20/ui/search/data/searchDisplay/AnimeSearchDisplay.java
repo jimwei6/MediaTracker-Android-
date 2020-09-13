@@ -80,7 +80,7 @@ public class AnimeSearchDisplay extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(result != null &&!result.isEmpty()) {
-                mediaListAdapter.addList(result);
+                mediaListAdapter.addItemsToList(result);
                 mediaListAdapter.notifyDataSetChanged();
             }
         }

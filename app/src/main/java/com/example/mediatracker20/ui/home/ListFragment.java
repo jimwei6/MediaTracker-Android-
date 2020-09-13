@@ -67,7 +67,7 @@ public class ListFragment extends Fragment {
     private Dialog newListDialog;
     private ActionMode actionMode;
     private Menu menu;
-    private  SearchView searchView;
+   // private  SearchView searchView;
     private SelectionTracker selectionTracker;
 
     //Handle view creation and ui actions
@@ -77,7 +77,7 @@ public class ListFragment extends Fragment {
         homeViewModel = ViewModelProviders.of(this).get(ListViewModel.class);
         rootView = inflater.inflate(R.layout.fragment_list, container, false);
         listManager = ListManager.getInstance();
-        initializeSearchView();
+        //initializeSearchView();
         initializeSpinner();
         initializeRecyclerView();
         initializeSelectionTracker();
@@ -86,25 +86,25 @@ public class ListFragment extends Fragment {
         return rootView;
     }
 
-    //Initialize the search interface
-    private void initializeSearchView() {
-        searchView = rootView.findViewById(R.id.list_Frag_search);
-        searchView.setQueryHint("Search");
-        searchView.onActionViewExpanded();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mediaListAdapter.filter(newText);
-                return false;
-            }
-        });
-    }
+//    //Initialize the search interface
+//    private void initializeSearchView() {
+//        searchView = rootView.findViewById(R.id.list_Frag_search);
+//        searchView.setQueryHint("Search");
+//        searchView.onActionViewExpanded();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                mediaListAdapter.filter(newText);
+//                return false;
+//            }
+//        });
+//    }
 
 
     //initialize list of cardViews to show all lists
@@ -112,7 +112,7 @@ public class ListFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.list_frag_recyc);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         allLists = listManager.allActiveLists().stream().collect(Collectors.toList());
-        mediaListAdapter = new MediaListAdapter(allLists, actionMode);
+        mediaListAdapter = new MediaListAdapter(allLists);
         recyclerView.setAdapter(mediaListAdapter);
     }
 
@@ -126,7 +126,7 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sortList(allLists);
-                searchView.clearFocus();
+                //searchView.clearFocus();
             }
 
             @Override
@@ -164,15 +164,15 @@ public class ListFragment extends Fragment {
                     actionMode.setTitle(size.toString());
                     fab.setClickable(false);
                     fab.hide();
-                    searchView.clearFocus();
-                    searchView.setInputType(InputType.TYPE_NULL);
+//                    searchView.clearFocus();
+//                    searchView.setInputType(InputType.TYPE_NULL);
                     spinner.setEnabled(false);
                 } else if (!selectionTracker.hasSelection() && actionMode != null) {
                     actionMode.finish();
                     actionMode = null;
                     fab.setClickable(true);
                     fab.show();
-                    searchView.setInputType(InputType.TYPE_CLASS_TEXT);
+                   // searchView.setInputType(InputType.TYPE_CLASS_TEXT);
                     spinner.setEnabled(true);
                 } else if (selectionTracker.hasSelection()){
                     Integer size = selectionTracker.getSelection().size();
@@ -190,7 +190,7 @@ public class ListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchView.clearFocus();
+              //  searchView.clearFocus();
                 newListDialog.setContentView(R.layout.new_list_popup);
                 newListDialog.show();
                 Button confirm = newListDialog.findViewById(R.id.new_list_confirm_btn);
@@ -199,7 +199,7 @@ public class ListFragment extends Fragment {
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        searchView.setQuery("", false);
+                       // searchView.setQuery("", false);
                         EditText name = newListDialog.findViewById(R.id.new_list_title);
                         try {
                             MediaList newList = new MediaList(name.getText().toString());

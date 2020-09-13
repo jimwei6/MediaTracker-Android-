@@ -72,7 +72,7 @@ public class AnimeSearch extends Fragment {
         recommendedLayout = view.findViewById(R.id.media_recommend);
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
         pagerCardAdapter = new MediaItemDisplayAdapter(mediaItems, R.id.action_animeSearch_to_itemSumamry);
-        pagerCardAdapter.isPager(true);
+        pagerCardAdapter.setIsPager(true);
         viewPager2.setAdapter(pagerCardAdapter);
         trendingLayout = view.findViewById(R.id.anime_search_trend_layout);
         new TabLayoutMediator(tabLayout, viewPager2,
@@ -105,7 +105,7 @@ public class AnimeSearch extends Fragment {
     }
 
     private void generateView(Pair<List<MediaItem>, List<MediaItem>> items) {
-        pagerCardAdapter.addList(items.first);
+        pagerCardAdapter.addItemsToList(items.first);
         pagerCardAdapter.notifyDataSetChanged();
         createTopAiring(items.second);
         tabLayout.setVisibility(View.VISIBLE);
@@ -168,7 +168,7 @@ public class AnimeSearch extends Fragment {
                     textView.setText("Failed to get information. Try later or another source");
                     recommendedLayout.addView(textView);
                 } else {
-                    pagerCardAdapter.addList(randomItems);
+                    pagerCardAdapter.addItemsToList(randomItems);
                     pagerCardAdapter.notifyDataSetChanged();
                 }
                 if (trendingItems == null || trendingItems.isEmpty()) {

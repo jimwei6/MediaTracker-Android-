@@ -50,7 +50,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUI(FirebaseUser account) {
         if(account != null) {
-            findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
            Database.loadAppInfo(this);
         }
     }

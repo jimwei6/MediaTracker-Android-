@@ -7,6 +7,8 @@ they watch. This application use the Jikan API, AniList GraphQL, IMDb API, and h
 and storing information about a specific show. The goal of this project is to create an app so that users are able to
 store information about anime, drama, movies and more in one app.
 
+[Current overview of project](https://github.com/jimwei0620/MediaTracker-Android-/releases/tag/v.0.1)
+
 ## Current Functions
 
 - Log in with Google account (however does nothing)
