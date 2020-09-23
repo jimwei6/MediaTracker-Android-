@@ -1,6 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 android {
+    signingConfigs {
+        debug {
+            Properties properties = new Properties();
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            keyPassword properties.getProperty("keyPassword")
+            storeFile file(properties.getProperty("storeFile"))
+            storePassword properties.getProperty("storePassword")
+            keyAlias properties.getProperty("keyAlias")
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -12,6 +22,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
@@ -53,7 +64,7 @@ dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.6.0'
     implementation group: 'com.squareup.okio', name: 'okio', version: '2.6.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'

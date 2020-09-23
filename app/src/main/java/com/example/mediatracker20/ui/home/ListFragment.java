@@ -2,7 +2,6 @@ package com.example.mediatracker20.ui.home;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -44,7 +42,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.Organize.Sorter;
+import model.organize.Sorter;
 import model.exceptions.EmptyStringException;
 import model.exceptions.KeyAlreadyExistsException;
 import model.model.ListManager;

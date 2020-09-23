@@ -9,4 +9,5 @@
     <color name="normal_background">#80202020</color>
     <color name="edit_text_bar">#8a8a8a</color>
     <color name="text_color_link">#bfc2c7</color>
+    <color name="transparent">#00000000</color>
 </resources>

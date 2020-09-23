@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -100,8 +101,12 @@ public class AnimeSearch extends Fragment {
 
     private boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        Network nw = cm.getActiveNetwork();
+        if(nw == null) {
+            return false;
+        }
+        NetworkCapabilities actNw = cm.getNetworkCapabilities(nw);
+        return actNw != null && (actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH));
     }
 
     private void generateView(Pair<List<MediaItem>, List<MediaItem>> items) {

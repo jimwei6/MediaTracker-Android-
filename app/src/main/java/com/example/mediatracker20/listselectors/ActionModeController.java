@@ -36,6 +36,7 @@ public class ActionModeController implements ActionMode.Callback {
     private boolean isList;
     private MediaListAdapter mediaListAdapter;
     private MediaItemAdapter mediaItemAdapter;
+    private MediaList listChosen = null;
 
     //List action mode
     public ActionModeController(Context context, SelectionTracker selectionTracker, List<MediaList> list, MediaListAdapter adapter) {
@@ -45,11 +46,13 @@ public class ActionModeController implements ActionMode.Callback {
     }
 
     //MediaItem action mode
-    public ActionModeController(Context context, SelectionTracker selectionTracker, List<MediaItem> mediaItemList, String listName, MediaItemAdapter adapter) {
+    public ActionModeController(Context context, SelectionTracker selectionTracker, List<MediaItem> mediaItemList,
+                                String name, MediaItemAdapter adapter, MediaList list) {
         construct(context, selectionTracker, adapter);
         currentItems = mediaItemList;
-        this.listName = listName;
+        listName = name;
         isList = false;
+        listChosen = list;
     }
 
     //List action mode construct
@@ -123,6 +126,24 @@ public class ActionModeController implements ActionMode.Callback {
     //handle list actions when items are selected
     private void handleItemActions(MenuItem item, ActionMode mode) {
         Iterator<MediaItem> itemIterator = selectionTracker.getSelection().iterator();
+        switch (item.getItemId()) {
+            case R.id.list_selection_delete:
+                int count = 0;
+                while (itemIterator.hasNext()) {
+                    try {
+                        MediaItem next = itemIterator.next();
+                        listManager.deleteMediaItemFromList(listChosen, next);
+                        Database.deleteInfo("Items", next.hashCode());
+                        count++;
+                    } catch (ItemNotFoundException e) {
+                        Toast.makeText(context, "Fail to delete all items selected. Please contact support", Toast.LENGTH_SHORT);
+                    }
+                }
+                onDestroyActionMode(mode);
+                mediaItemAdapter.notifyDataSetChanged();
+                Toast.makeText(context, count + " lists deleted", Toast.LENGTH_SHORT);
+
+        }
         //TODO handle item deletes
     }
 

@@ -1,4 +1,4 @@
-package model.Organize;
+package model.organize;
 
 
 import model.model.MediaItem;
