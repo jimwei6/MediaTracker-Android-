@@ -11,7 +11,8 @@
         android:id="@+id/list_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="false"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:tag="@string/home_fragment_tag"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,16 +34,6 @@
                 android:layout_weight="2"
                 android:foregroundGravity="center"
                 android:gravity="center" />
-
-<!--            <SearchView-->
-<!--                android:id="@+id/list_Frag_search"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="3"-->
-<!--                android:focusable="false"-->
-<!--                android:focusableInTouchMode="false"-->
-<!--                android:queryBackground="@color/common_google_signin_btn_text_light"-->
-<!--                android:touchscreenBlocksFocus="true" />-->
 
         </LinearLayout>
 

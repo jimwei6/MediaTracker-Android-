@@ -1,6 +1,7 @@
 package com.example.mediatracker20.ui.items;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -59,7 +61,7 @@ public class ItemListFragment extends Fragment {
     private Spinner spinner;
     private ActionMode actionMode;
     private Menu menu;
-  //  private SearchView searchView;
+    private SearchView searchView;
 
     //current list
     private String listName;
@@ -68,16 +70,21 @@ public class ItemListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         rootView = inflater.inflate(R.layout.fragment_media, container, false);
         listName = getArguments().getString("LIST_NAME");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(listName);
         listManager = ListManager.getInstance();
         itemManager = ItemManager.getInstance();
         initializeRecyclerView();
-        //initializeSearchView();
         initializeSpinner();
         initializeSelectionTracker();
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -86,24 +93,23 @@ public class ItemListFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
     }
 
-//    private void initializeSearchView() {
-//        searchView = rootView.findViewById(R.id.media_frag_search);
-//        searchView.setQueryHint("Search");
-//        searchView.onActionViewExpanded();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                searchView.clearFocus();
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                mediaItemAdapter.filter(newText);
-//                return false;
-//            }
-//        });
-//    }
+    private void initializeSearchView() {
+        searchView.setQueryHint("Search");
+        searchView.onActionViewExpanded();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mediaItemAdapter.filter(newText);
+                return false;
+            }
+        });
+    }
 
 //    //initialize list of cardViews to show all lists
     private void initializeRecyclerView() {
@@ -129,7 +135,6 @@ public class ItemListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sortItemList(allItems);
-               // searchView.clearFocus();
             }
 
             @Override
@@ -148,7 +153,6 @@ public class ItemListFragment extends Fragment {
                 new ListItemLookup(recyclerView),
                 StorageStrategy.createLongStorage()
         ).build();
-        Log.d("tracker", "built");
         mediaItemAdapter.setSelectionTracker(selectionTracker);
         selectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
             @Override
@@ -159,12 +163,12 @@ public class ItemListFragment extends Fragment {
                             selectionTracker, allItems, listName, mediaItemAdapter, chosenList));
                     Integer size = selectionTracker.getSelection().size();
                     actionMode.setTitle(size.toString());
-//                    searchView.clearFocus();
-//                    searchView.setInputType(InputType.TYPE_NULL);
+                    searchView.clearFocus();
+                    searchView.setInputType(InputType.TYPE_NULL);
                 } else if (!selectionTracker.hasSelection() && actionMode != null) {
                     actionMode.finish();
                     actionMode = null;
-                    //searchView.setInputType(InputType.TYPE_CLASS_TEXT);
+                    searchView.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else if (selectionTracker.hasSelection()){
                     Integer size = selectionTracker.getSelection().size();
                     actionMode.setTitle(size.toString());
@@ -179,7 +183,10 @@ public class ItemListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         this.menu = menu;
+        searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        initializeSearchView();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
