@@ -20,9 +20,3 @@ store information about anime, drama, movies and more in one app.
 - Add and save tags to items
 - Add and delete items
 - Add Rating, Review, and Status for all items
-
-
-## Sample demo video
-[Link](https://youtu.be/NmLzhlZ_BmE)
-
-
